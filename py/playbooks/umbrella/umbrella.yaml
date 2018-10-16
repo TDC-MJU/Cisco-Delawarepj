@@ -1,0 +1,26 @@
+---
+- name: query Umbrella for a domain
+  hosts: all
+  connection: local
+  gather_facts: false
+  vars:
+      token: ef0c3eab-2891-411e-a68c-d4e142cdd8eb
+      limit: 10
+  tasks:
+    - name: Return a list from umbrella
+      uri:
+        url: "https://investigate.api.umbrella.com//topmillion?limit={{ limit }}"
+        method: GET
+        status_code: 200
+        return_content: yes
+        headers:
+          Authorization: "Bearer {{ token }}"
+      register: response
+
+
+    - debug:
+        #msg: "{{ response.json['items'] }}"
+        #loop: "{{ response.json['items'] }}"
+        msg: "{{ response.json }}"
+        #msg: "{{ response.json['items'] | length }}"
+      

@@ -1,0 +1,32 @@
+---
+- name: telnet to term server
+  hosts: termserver
+  connection: paramiko
+  gather_facts: no
+
+
+  ###FILTERS: http://docs.ansible.com/ansible/latest/playbooks_filters.html
+  # - debug:
+  #     msg: "Site 4 Router's Loopback IP is: {{loopback_ip | ipaddr('address')}}"
+
+  tasks:
+   # - name: return motd to registered var
+   #   command: lsb_release -a
+   #   register: mymotd
+   # - debug: 
+   #     msg: "{{ mymotd }}"
+
+    - name: telnet into termserver
+      telnet:
+        host: 172.26.32.66.2019
+        login_prompt: ""
+        password_prompt: ""
+        pause: yes
+        prompts:
+          - "[airlines>|#|]"
+        command:
+          - terminal length 0
+          - show clock
+      register: clock
+    - debug: 
+       msg: "{{clock}}"

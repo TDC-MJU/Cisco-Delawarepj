@@ -1,0 +1,13 @@
+---
+# tasks file for gather_facts
+- name: send commands to IOS
+  ios_facts:
+    gather_subset: all
+
+- name: add net_version to already existing file
+  lineinfile:
+    path: ./output
+    line: "{{ansible_net_version}}"
+
+- debug:
+    msg: "{{ansible_net_version}}"

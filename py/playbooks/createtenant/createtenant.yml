@@ -1,0 +1,21 @@
+---
+- name: ENSURE TENANT CONFIGURATION EXISTS
+  hosts: apic
+  connection: local
+  gather_facts: False
+  vars:
+    tenant: "default"
+    private: no
+  tasks:
+    - name: CREATE TENANT
+      aci_tenant:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: "{{ tenant }}"
+        description: "Tenant Created Using Ansible"
+      register: success
+    - debug:
+        msg: "[Successfully created tenant.]"

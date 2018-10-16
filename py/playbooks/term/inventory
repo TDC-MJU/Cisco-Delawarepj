@@ -1,0 +1,5 @@
+[dns]
+zk
+
+[termserver]
+172.26.32.66

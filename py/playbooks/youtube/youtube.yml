@@ -1,0 +1,35 @@
+---
+- name: query youtube
+  hosts: all
+  connection: local
+  gather_facts: false
+  vars:
+      query: Cisco Systems
+      maxResults: 10
+      part: snippet
+      key: AIzaSyAADYa3m3A1vTBovx8iRdfCcoONOp4EcPc
+      type: video
+  tasks:
+    - name: Return a list of videos from youtube
+      uri:
+        url: "https://www.googleapis.com/youtube/v3/search?type={{ type }}&q={{ query | replace(' ', '%20') }}&maxResults={{ maxResults }}&part={{ part }}&key={{ key }}"
+        method: GET
+        force_basic_auth: yes
+        status_code: 200
+        return_content: yes
+      register: response
+
+    - name: Filter response list for Video ID and Title
+      set_fact:
+        #videolist: "{{ response.json['items'] }}"
+        videolinks: "{{ videolinks|default([]) + [{ 'title': item.snippet.title, 'link': 'https://www.youtube.com/watch?v=' + item.id.videoId }] }}"
+       # videolinks: "{{ videolinks|default([]) + [ {'title': item.title, 'link': 'https://www.youtube.com/watch?v=' + item.id.videoId} ] }}"
+      with_items: "{{ response.json['items'] }}"
+
+    - debug:
+        #msg: "{{ response.json['items'] }}"
+        #loop: "{{ response.json['items'] }}"
+        msg: "{{ videolinks }}"
+        #msg: "{{ response.json['items'] | length }}"
+      
+

@@ -1,0 +1,41 @@
+---
+- name: Ask CAM a question
+  hosts: all
+  connection: local
+  gather_facts: false
+  vars:
+      question: how many ports does the catalyst 3850 have? 
+      topic: ''
+
+  tasks:
+    - name: Return an Answer from CAM
+      uri:
+        url: https://mdx.cisco.com/mdsqna/rest/qna_getanswer
+        method: POST
+        return_content: yes
+        validate_certs: no
+        body: '{ "appid" : "hackit", 
+                 "apptoken" : "e8f5d2bf0b32bbe07724d55459d0b0c1", 
+                 "topic": [], 
+                 "question": "{{ question }}", 
+                 "locale": "en_US" }'
+        body_format: json
+        status_code: 200
+        headers:
+          Cookie: ObSSOCookie=HgrWSQFT%2FgCJ0%2BbVtZGIxCgVIPTDr7EaqMF3Tt%2FMtFZgmxGErZ2w2RMdY7oPhyHLv2pTOSvLivNkSpG9BmcIc372wIGV27576BTiX6nRNoZ7sIKErVzOB1NWuyhJftKr9xXSbBuM7G3jt%2BAEQLgow3PsRhBb6mnkpnghRzQpNWTjmUS%2BIDNrL900dpHP8ZRgc%2BZGbgeaUUrcBboGx7fM0IssHDNaxZN%2FbS86YZYIa14oZQaZyfWCaPrKZd1o7tcwMy%2Bzs0UYUN1VZRJo%2Bt48TUCQhbY5qA4wpjbN0wi55ghxLhNnbjDIacgADA9q%2Fq%2B2FMA7CJtQP79Ub59CnzNvba6Dmu%2FCFnX0QJ%2F5hAl7a3yS%2FWilvuMJ%2FZJiA0LKsMYYc%2BQ5DmKu9pSXg%2BVV8dWOsp5JtoHdy7pNJXGGoLNKR2paDFm%2BB%2F5bJJSB26X5aUXii4sZAOFCQ2W8RUDjctdu2H%2FF3ASsprhZSpqj9W8Ai0YKjA1Zqn4RMgPFpXRxEamd
+      register: response
+
+    - name: CAM has an answer
+      set_fact:
+        answer: "{{ response.json.answers_list[0].answer_text }}"
+      when: "response.json.number_of_answers > 0"
+
+    - name: CAM has no answer
+      set_fact: 
+        answer: 'CAM does not have an answer, please ask a different question'
+      when: "response.json.number_of_answers == 0"
+
+    - debug:
+        msg: "{{ [answer] }}"
+
+      

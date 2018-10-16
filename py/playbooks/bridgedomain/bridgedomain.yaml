@@ -1,0 +1,40 @@
+---
+- name: ENSURE APPLICATION CONFIGURATION EXISTS
+  hosts: apic
+  connection: local
+  gather_facts: False
+  vars:
+    tenant: "default"
+    vrf: "default"
+    bd_name: "default"
+    private: no
+  tasks:
+    - name: CREATE TENANT
+      aci_tenant:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: "{{ tenant }}"
+        description: "Tenant Created Using Ansible"
+    - name: CREATE VRF
+      aci_vrf:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: "{{ tenant }}"
+        vrf_name: "{{ vrf }}"
+        description: "VRF for Tenant Created Using Ansible"
+    - name: CREATE BRIDGE DOMAIN
+      aci_bd:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: '{{ tenant }}'
+        vrf: '{{ vrf }}'
+        bd: '{{ bd_name }}'

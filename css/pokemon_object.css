@@ -1,0 +1,35 @@
+.thumbs-up {
+    font-size:17px;
+    color:green;
+}
+
+.thumbs-down {
+    font-size:17px;
+    color:red;
+}
+
+.numberonthumb{
+  position:absolute;
+  left:47px; /** you can make changes here to change position **/
+  top:18px;
+  font-size:14px;
+  z-index: 3;
+}
+
+/*Accordion Containers*/
+.pokemon{
+  font-size: 12px;
+}
+.time{
+  position:absolute;
+  font-size: 12px;
+}
+.icon{
+}
+.icons-up{
+  position:absolute;
+  
+}
+.icons-down{
+  position:absolute;
+}

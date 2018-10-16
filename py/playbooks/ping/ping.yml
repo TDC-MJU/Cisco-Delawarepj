@@ -1,0 +1,15 @@
+---
+- name: Ping Playbook
+  hosts: all
+  connection: local
+  gather_facts: false
+  vars:
+      ip: 10.122.5.175
+  tasks:
+    - name: pinging "{{ip}}"
+      command: 'ping -c 2 "{{ip}}"'
+      register: response
+      
+    - name: Ping Output
+      debug:
+        msg: "{{response.stdout_lines}}"

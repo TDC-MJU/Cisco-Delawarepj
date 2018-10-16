@@ -1,0 +1,19 @@
+
+.row {
+  margin-bottom: 20px;
+}
+.row .row {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+[class*="col-"] {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.heading-color {
+  background-color: #fff !important;
+}
+.map {
+  height: 250px;
+  width: 100%;
+}

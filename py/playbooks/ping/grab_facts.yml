@@ -1,0 +1,18 @@
+---
+- name: ls
+  hosts: dns
+  connection: paramiko
+  gather_facts: no
+
+
+  ###FILTERS: http://docs.ansible.com/ansible/latest/playbooks_filters.html
+  # - debug:
+  #     msg: "Site 4 Router's Loopback IP is: {{loopback_ip | ipaddr('address')}}"
+
+  tasks:
+   - name: return motd to registered var
+     command: lsb_release -a
+     register: mymotd
+   - debug: 
+       msg: "{{ mymotd }}"
+      

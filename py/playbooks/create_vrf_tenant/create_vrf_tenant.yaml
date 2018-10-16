@@ -1,0 +1,29 @@
+---
+- name: CREATE VRF FOR TENANT
+  hosts: apic
+  connection: local
+  gather_facts: False
+  vars:
+    tenant: "default"
+    vrf: "default"
+    private: no
+  tasks:
+    - name: CREATE TENANT
+      aci_tenant:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: "{{ tenant }}"
+        description: "Tenant Created Using Ansible"
+    - name: CREATE VRF
+      aci_vrf:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        state: "present"
+        validate_certs: False
+        tenant: "{{ tenant }}"
+        vrf_name: "{{ vrf }}"
+        description: "VRF for Tenant Created Using Ansible"
